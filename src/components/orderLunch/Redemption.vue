@@ -149,6 +149,9 @@ export default {
   color: red;
   margin: 5px;
 }
+.param{
+  padding-bottom: 75px;
+}
 .saveButton {
   position: fixed;
   bottom: 0;
@@ -170,6 +173,7 @@ export default {
   position: absolute;
   width: 100%;
   font-size: 18px;
+  padding-bottom: 75px;
 }
 .redemptionDetails {
   margin: 10px;

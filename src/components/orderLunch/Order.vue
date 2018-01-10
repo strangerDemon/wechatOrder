@@ -181,7 +181,7 @@ export default {
       let vm = this;
       vm.orderTimes = 0;
       vm.lunchTypeATimes = 0;
-      for (let i = 0; i < vm.orderTimes; i++) {
+      for (let i = 0; i < vm.orderList.length; i++) {
         if (vm.orderList[i].orderType > 0) {
           vm.orderTimes++;
         }
