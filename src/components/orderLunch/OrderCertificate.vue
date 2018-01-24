@@ -94,9 +94,9 @@ export default {
           orderType: 0,
           changeType: 2,
           page: 0,
-          isCancle: 1
+          isCancle: 1,
+          func:function(){ Indicator.close();}
         });
-        Indicator.close();
       }
     });
   }

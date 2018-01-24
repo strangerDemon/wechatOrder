@@ -113,7 +113,8 @@ export default {
           label: "其他换购"
         }
       ],
-      list: []
+      list: [],
+      lastRequestTime: null
     };
   },
   props: {},
@@ -261,10 +262,6 @@ export default {
 
     search(page) {
       let vm = this;
-      Indicator.open({
-        text: "查询中...",
-        spinnerType: "fading-circle"
-      });
       vm.page = page;
       let name = vm.isAdmin ? vm.username : "null";
       vm.$store.commit("getOrderList", {
@@ -277,7 +274,6 @@ export default {
         page: page,
         isCancle: 0
       });
-      Indicator.close();
     }
   },
   beforeCreate() {},
@@ -294,9 +290,17 @@ export default {
       let ch = window.innerHeight;
       //相对顶部的高度
       let h = this.scrollY;
+      if (vm.lastRequestTime == null) {
+        vm.lastRequestTime = new Date();
+      } else {
+        let now = new Date();
+        if (now - vm.lastRequestTime < 500) {
+          return;
+        }
+        vm.lastRequestTime = now;
+      }
       if (h >= sh - ch) {
         vm.page++;
-        console.log(vm.page);
         vm.search(vm.page);
       }
     };

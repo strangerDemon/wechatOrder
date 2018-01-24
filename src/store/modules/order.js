@@ -24,13 +24,18 @@ const mutations = {
   getOrderList(state, info) {
     asmx.post("doSearch", info).then(function(resp) {
       state.orderList = resp;
+      if(info.func!=undefined){
+        info.func();
+      }
     });
   },
   order(state, info) {
     asmx.post("doOrder", info).then(function(resp) {
       if (resp) {
         MessageBox.alert("点餐成功");
-        info.func();
+        if(info.func!=undefined){
+          info.func();
+        }
       }
     });
   },
@@ -38,6 +43,9 @@ const mutations = {
     asmx.post("doCancle", info).then(function(resp) {
       if (resp) {
         MessageBox.alert("取消点餐成功");
+        if(info.func!=undefined){
+          info.func();
+        }
       }
     });
   },
@@ -45,6 +53,9 @@ const mutations = {
     asmx.post("doChangeBuy", info).then(function(resp) {
       if (resp) {
         MessageBox.alert("换购成功");
+        if(info.func!=undefined){
+          info.func();
+        }
       }
     });
   }

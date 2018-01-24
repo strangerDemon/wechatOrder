@@ -59,6 +59,9 @@ const mutations = {
   getMeunList(state, info) {
     asmx.post("getMeunList", info).then(function(resp) {
       state.menuList = resp;
+      if(info.func!=undefined){
+        info.func();
+      }
     });
   },
   setPageUrlParam(state, info) {

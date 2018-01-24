@@ -107,13 +107,15 @@ export default {
       vm.isShowResult = false;
     },
     requestUserInfo() {
-      Indicator.open({
-        text: "加载中...",
-        spinnerType: "fading-circle"
-      });
+      // Indicator.open({
+      //   text: "加载中...",
+      //   spinnerType: "fading-circle"
+      // });
       let vm = this;
-      vm.$store.commit("getUserInfo", { code: vm.code });
-      Indicator.close();
+      vm.$store.commit("getUserInfo", {
+        code: vm.code,
+        //func: function() {Indicator.close();}
+      });
     }
   },
   beforeCreate() {},
