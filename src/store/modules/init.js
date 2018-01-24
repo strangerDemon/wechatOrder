@@ -41,17 +41,18 @@ const mutations = {
   getSystemParam(state, info) {
     asmx.post("getSystemParam", info).then(function(resp) {
       state.systemParam = resp;
+      if(info.func!=undefined){
+        info.func();
+      }
     });
   },
   getUserInfo(state, info) {
     asmx.post("getUserInfo", info).then(function(resp) {
-      // if (!resp) {
-      //   Router.push({
-      //     name: "NoUser"
-      //   });
-      // }
       if(resp){
         state.userInfo = resp;
+        if(info.func!=undefined){
+          info.func();
+        }
       }
     });
   },
@@ -67,6 +68,9 @@ const mutations = {
   getRedemptionList(state, info) {
     asmx.post("getChangeBuyList", info).then(function(resp) {
       state.redemptionList = resp;
+      if(info.func!=undefined){
+        info.func();
+      }
     });
   }
 };

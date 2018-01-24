@@ -30,8 +30,7 @@ const mutations = {
     asmx.post("doOrder", info).then(function(resp) {
       if (resp) {
         MessageBox.alert("点餐成功");
-      } else {
-        //MessageBox.alert("点餐失败");
+        info.func();
       }
     });
   },
@@ -39,8 +38,6 @@ const mutations = {
     asmx.post("doCancle", info).then(function(resp) {
       if (resp) {
         MessageBox.alert("取消点餐成功");
-      } else {
-        //MessageBox.alert("取消点餐失败");
       }
     });
   },
@@ -48,8 +45,6 @@ const mutations = {
     asmx.post("doChangeBuy", info).then(function(resp) {
       if (resp) {
         MessageBox.alert("换购成功");
-      } else {
-        //MessageBox.alert("换购失败");
       }
     });
   }

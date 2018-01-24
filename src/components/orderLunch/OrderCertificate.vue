@@ -18,7 +18,15 @@
 </template>
 <script>
 import * as AnalysisRequestParam from "@/utils/AnalysisRequestParam";
-const week = ["星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+const week = [
+  "星期天",
+  "星期一",
+  "星期二",
+  "星期三",
+  "星期四",
+  "星期五",
+  "星期六"
+];
 export default {
   name: "OrderCertificate",
   directives: {},
@@ -71,24 +79,26 @@ export default {
       today.getDate() +
       "日  " +
       week[today.getDay()];
-    vm.$store.commit("getUserInfo", { code: vm.code });
-    let day = new Date();
-    let yesterday = new Date(
-      day.setTime(day.getTime() - 24 * 60 * 60 * 1000)
-    ).toLocaleDateString();
-    setTimeout(() => {
-      vm.$store.commit("getOrderList", {
-        name: "null",
-        code: vm.code,
-        startDate: yesterday,
-        endDate: yesterday,
-        orderType: 0,
-        changeType: 2,
-        page: 0,
-        isCancle: 1
-      });
-      Indicator.close();
-    }, 500);
+    vm.$store.commit("getUserInfo", {
+      code: vm.code,
+      func: function() {
+        let day = new Date();
+        let yesterday = new Date(
+          day.setTime(day.getTime() - 24 * 60 * 60 * 1000)
+        ).toLocaleDateString();
+        vm.$store.commit("getOrderList", {
+          name: "null",
+          code: vm.code,
+          startDate: yesterday,
+          endDate: yesterday,
+          orderType: 0,
+          changeType: 2,
+          page: 0,
+          isCancle: 1
+        });
+        Indicator.close();
+      }
+    });
   }
 };
 </script>
@@ -114,20 +124,20 @@ export default {
 .username {
   font-family: fantasy;
 }
-.orderList{
-  margin-top:10px;
+.orderList {
+  margin-top: 10px;
 }
 .item {
   margin: 35px 10px;
   font-size: 40px;
   display: block;
 }
-.lunchTimes{
+.lunchTimes {
   float: right;
   margin-right: 25px;
 }
-.lunchName{
-  margin-left:25px;
+.lunchName {
+  margin-left: 25px;
 }
 .title {
   font-size: 34px;

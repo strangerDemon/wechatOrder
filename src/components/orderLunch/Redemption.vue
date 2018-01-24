@@ -103,19 +103,17 @@ export default {
       vm.money = 0;
       vm.redemption = [];
       vm.redemptionName = [];
-      vm.requestUserInfo(100);
+      vm.requestUserInfo();
       vm.isShowResult = false;
     },
-    requestUserInfo(times) {
+    requestUserInfo() {
       Indicator.open({
         text: "加载中...",
         spinnerType: "fading-circle"
       });
       let vm = this;
-      setTimeout(() => {
-        vm.$store.commit("getUserInfo", { code: vm.code });
-        Indicator.close();
-      }, times);
+      vm.$store.commit("getUserInfo", { code: vm.code });
+      Indicator.close();
     }
   },
   beforeCreate() {},
@@ -123,8 +121,12 @@ export default {
   destroyed() {},
   mounted() {
     let vm = this;
-    vm.$store.commit("getRedemptionList", { code: vm.code });
-    vm.requestUserInfo(500);
+    vm.$store.commit("getRedemptionList", {
+      code: vm.code,
+      func: function() {
+        vm.requestUserInfo();
+      }
+    });
   }
 };
 </script>
@@ -149,7 +151,7 @@ export default {
   color: red;
   margin: 5px;
 }
-.param{
+.param {
   padding-bottom: 75px;
 }
 .saveButton {

@@ -4,7 +4,7 @@ import tokenUtil from './tokenUtil'
 import store from '../store/index.js'
 
 const instance = axios.create({
-  baseURL: 'http://www.ztgis.com:8880/lpb.asmx/',//'http://192.168.1.100:7982/lpb.asmx/',//
+  baseURL: 'http://www.ztgis.com:8867/lpb.asmx/',//'http://192.168.1.100:7982/lpb.asmx/',//
   timeout: 60000,
   headers: {
     'X-Requested-With': 'XMLHttpRequest'

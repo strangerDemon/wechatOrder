@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const instance = axios.create({
-  baseURL: 'http://www.ztgis.com:8880/mobile',  //发布的地址
+  baseURL: 'http://www.ztgis.com:8867/mobile',  //发布的地址
   timeout: 60000,
   headers: {
     'X-Requested-With': 'XMLHttpRequest'

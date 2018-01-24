@@ -133,9 +133,11 @@ export default {
   },
   watch: {
     orderType(val) {
-      if(val<0){
-        this.orderTypeStr = this.orderTypeOptions[this.orderTypeOptions.length-1].label;
-      }else{
+      if (val < 0) {
+        this.orderTypeStr = this.orderTypeOptions[
+          this.orderTypeOptions.length - 1
+        ].label;
+      } else {
         this.orderTypeStr = this.orderTypeOptions[val].label;
       }
     },
@@ -155,11 +157,11 @@ export default {
         value: "-1",
         label: "其他换购"
       });
-      console.log(vm.orderTypeOptions)
+      console.log(vm.orderTypeOptions);
     },
     orderList(list) {
       let vm = this;
-      if(vm.page==1){
+      if (vm.page == 1) {
         vm.list = [];
       }
       if (list.length == 0) {
@@ -265,19 +267,17 @@ export default {
       });
       vm.page = page;
       let name = vm.isAdmin ? vm.username : "null";
-      setTimeout(() => {
-        vm.$store.commit("getOrderList", {
-          name: name,
-          code: vm.code,
-          startDate: vm.startDateStr,
-          endDate: vm.endDateStr,
-          orderType: vm.orderType,
-          changeType: vm.changeType,
-          page: page,
-          isCancle: 0
-        });
-        Indicator.close();
-      }, 100);
+      vm.$store.commit("getOrderList", {
+        name: name,
+        code: vm.code,
+        startDate: vm.startDateStr,
+        endDate: vm.endDateStr,
+        orderType: vm.orderType,
+        changeType: vm.changeType,
+        page: page,
+        isCancle: 0
+      });
+      Indicator.close();
     }
   },
   beforeCreate() {},
