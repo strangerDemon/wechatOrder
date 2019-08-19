@@ -8,6 +8,7 @@ import NoUser from "@/components/orderLunch/NoUser";
 Vue.use(Router);
 
 export default new Router({
+  mode: 'history',
   routes: [
     {
       path: "/",

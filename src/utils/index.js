@@ -3,6 +3,6 @@
  */
 
 import axios from './axios'
-import asmx from './asmx'
+import httpUtils from './httpUtils'
 import AnalysisRequestParam from './AnalysisRequestParam'
-export { axios,asmx ,AnalysisRequestParam}
+export { axios,httpUtils ,AnalysisRequestParam}

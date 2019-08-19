@@ -30,8 +30,8 @@
     </div>
     <div class="todayOrderList">
       <mt-cell title="今日点餐情况："></mt-cell>
-      <mt-cell v-for="(order,index) in orderList" :key="index" :title="order.orderName" v-if="order.orderType>0" :label="order.createDate">
-        <span v-if="order.isCancle" style="color: red" class="buttonText">已退订</span>
+      <mt-cell v-for="(order,index) in orderList" :key="index" :title="order.orderName" v-show="order.orderType>0" :label="order.createDate">
+        <span v-if="order.isCancel" style="color: red" class="buttonText">已退订</span>
         <span v-else style="color: blue" class="buttonText" @click="cancel(order.id)">退订</span>
       </mt-cell>
       <span class="space"></span>
@@ -47,6 +47,7 @@
     </mt-popup>
   </div>
 </template>
+
 <script>
   import * as AnalysisRequestParam from "@/utils/AnalysisRequestParam";
   export default {
@@ -101,7 +102,6 @@
     watch: {
       orderList(list) {
         let vm = this;
-
         if (vm.systemParam != null) {
           vm.updatelunchTypeTimes();
         }
@@ -134,7 +134,6 @@
       updateIsAdmire() {
         let vm = this;
         let balance = vm.userInfo.balance;
-
       },
       updatelunchTypeTimes() {
         let vm = this;
@@ -165,7 +164,7 @@
           return;
         }
         MessageBox.confirm("确定取消订餐?").then(action => {
-          vm.$store.commit("cancle", {
+          vm.$store.commit("cancel", {
             code: vm.code,
             Id: orderId,
             func: function() {
@@ -258,21 +257,17 @@
       requestToday(times) {
         let vm = this;
         setTimeout(function() {
-          vm.$store.commit("getUserInfo", { code: vm.code });
-        }, times);
-        let today = new Date().toLocaleDateString();
-        setTimeout(function() {
-          vm.$store.commit("getOrderList", {
-            name: "null",
+          vm.$store.commit("getUserInfo", {
             code: vm.code,
-            startDate: today,
-            endDate: today,
-            orderType: 0,
-            changeType: 2,
-            page: 0,
-            isCancle: 1
+            openId: "",
+            success: function() {
+              vm.$store.commit("getTodayOrder", {
+                name: "null",
+                code: vm.code
+              });
+            }
           });
-        }, times * 2);
+        }, times);
       }
     },
     beforeCreate() {},
@@ -286,17 +281,22 @@
       let vm = this;
       vm.$store.commit("getSystemParam", {
         code: vm.code,
-        func: function() {
+        success: function() {
           vm.requestToday(500);
-          vm.$store.commit("getMeunList", { code: vm.code });
+          vm.$store.commit("getMenuList", {
+            code: vm.code
+          });
+          Indicator.close();
+        },
+        error:function(){
           Indicator.close();
         }
       });
     }
   };
 </script>
-<style lang="css"
-       scoped>
+
+<style lang="css" scoped>
   .order {
     position: absolute;
     height: 100%;
@@ -304,47 +304,38 @@
     font-size: 18px;
     scroll-behavior: auto;
   }
-
   .userInfoDiv {
     text-align: center;
     margin: 13px 8px 8px;
   }
-
   .userDiv {
     display: block;
     margin: 5px 0;
     position: relative;
   }
-
   .balance,
   .username {
     font-family: fantasy;
   }
-
   .promptDiv {
     text-align: center;
     margin: 5px 0;
     position: relative;
   }
-
   .prompt {
     margin: 3px 0;
   }
-
   .admire {
     text-align: center;
     font-size: 16px;
     color: red;
     margin: 5px;
   }
-
   /* 菜品列表 */
-
   .clearfix {
     font-size: 20px;
     margin: 5px 10px;
   }
-
   .dish {
     position: relative;
     left: 5vw;
@@ -352,24 +343,20 @@
     width: 29%;
     display: inline-table;
   }
-
   .isShowMenuButton {
     float: right;
   }
-
   .saveButton {
     position: fixed;
     bottom: 0;
     min-height: 60px;
     border-radius: 0px;
   }
-
   .space {
     width: 100%;
     height: 60px;
     position: absolute;
   }
-
   .buttonText {
     cursor: pointer;
   }

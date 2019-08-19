@@ -1,4 +1,6 @@
-import { asmx } from "@/utils";
+import {
+  httpUtils
+} from "@/utils";
 import Router from "@/router";
 /**
  * Initial state
@@ -11,7 +13,7 @@ const state = {
   systemParam: {
     startTime: "", //点餐起始时间
     endTime: "", //点餐终止时间
-    isOrderOrNot:true,//时候可以点餐
+    isOrderOrNot: true, //时候可以点餐
     lunch: [] //午餐类别
   },
   //用户信息
@@ -39,27 +41,37 @@ const getters = {};
  */
 const mutations = {
   getSystemParam(state, info) {
-    asmx.post("getSystemParam", info).then(function(resp) {
-      state.systemParam = resp;
-      if(info.func!=undefined){
-        info.func();
-      }
-    });
-  },
-  getUserInfo(state, info) {
-    asmx.post("getUserInfo", info).then(function(resp) {
-      if(resp){
-        state.userInfo = resp;
-        if(info.func!=undefined){
-          info.func();
+    httpUtils.post("getSystemParam", info).then(function (resp) {
+      if (resp) {
+        state.systemParam = resp;
+        if (info.success != undefined) {
+          info.success();
+        }
+      } else {
+        if (info.error != undefined) {
+          info.error();
         }
       }
     });
   },
-  getMeunList(state, info) {
-    asmx.post("getMeunList", info).then(function(resp) {
+  getUserInfo(state, info) {
+    httpUtils.post("getUserInfo", info).then(function (resp) {
+      if (resp) {
+        state.userInfo = resp;
+        if (info.success != undefined) {
+          info.success();
+        }
+      } else {
+        if (info.error != undefined) {
+          info.error();
+        }
+      }
+    });
+  },
+  getMenuList(state, info) {
+    httpUtils.post("getMenuList", info).then(function (resp) {
       state.menuList = resp;
-      if(info.func!=undefined){
+      if (info.func != undefined) {
         info.func();
       }
     });
@@ -69,10 +81,16 @@ const mutations = {
     state.isAdmin = info.isAdmin;
   },
   getRedemptionList(state, info) {
-    asmx.post("getChangeBuyList", info).then(function(resp) {
-      state.redemptionList = resp;
-      if(info.func!=undefined){
-        info.func();
+    httpUtils.post("getChangeBuyList", info).then(function (resp) {
+      if (resp) {
+        state.redemptionList = resp;
+        if (info.success != undefined) {
+          info.success();
+        }
+      } else {
+        if (info.error != undefined) {
+          info.error();
+        }
       }
     });
   }

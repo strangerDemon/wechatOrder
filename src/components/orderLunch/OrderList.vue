@@ -44,7 +44,7 @@
     <div class="list">
       <ul style="padding:10px 0;" infinite-scroll-disabled="loading" infinite-scroll-distance="10">
         <mt-cell v-for="(order,index) in list" :key="index" :title="isAdmin?order.name+' : '+order.orderName:order.orderName" :label="order.createDate">
-          <span v-if="order.isCancle" style="color: red">已退订</span>
+          <span v-if="order.isCancel" style="color: red">已退订</span>
           <span v-else-if="checkDate(order.createDate)" style="color: blue" @click="cancel(order.id)">退订</span>
         </mt-cell>
       </ul>
@@ -272,7 +272,7 @@ export default {
         orderType: vm.orderType,
         changeType: vm.changeType,
         page: page,
-        isCancle: 0
+        isCancel: 0
       });
     }
   },

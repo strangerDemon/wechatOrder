@@ -43,161 +43,165 @@
     </div>
   </div>
 </template>
+
 <script>
-export default {
-  name: "Redemption",
-  directives: {},
-  components: {},
-  data() {
-    return {
-      isShowRedemption: true,
-      redemption: [],
-      redemptionName: [],
-      money: 0,
-      isShowResult: false,
-      showCommit: false
-    };
-  },
-  props: {},
-  computed: {
-    code() {
-      return this.$store.state.init.code;
+  export default {
+    name: "Redemption",
+    directives: {},
+    components: {},
+    data() {
+      return {
+        isShowRedemption: true,
+        redemption: [],
+        redemptionName: [],
+        money: 0,
+        isShowResult: false,
+        showCommit: false
+      };
     },
-    userInfo() {
-      return this.$store.state.init.userInfo;
-    },
-    redemptionList() {
-      return this.$store.state.init.redemptionList;
-    }
-  },
-  watch: {
-    userInfo(userInfo) {
-      this.showCommit = true;
-    }
-  },
-  methods: {
-    commit() {
-      let vm = this;
-      if (vm.money > vm.userInfo.balance) {
-        MessageBox.alert("成交金额不能大于" + vm.userInfo.balance, "警告");
-        return;
-      } else if (vm.redemption.length == 0) {
-        MessageBox.alert("请选择换购物品", "警告");
-        return;
-      } else {
-        vm.$store.commit("doChangeBuy", {
-          code: vm.code,
-          value: vm.redemption.toString(),
-          money: vm.money
-        });
-        vm.redemptionList.forEach(element => {
-          if (vm.redemption.includes(element.value)) {
-            vm.redemptionName.push(element.label);
-          }
-        });
-        vm.isShowResult = true;
+    props: {},
+    computed: {
+      code() {
+        return this.$store.state.init.code;
+      },
+      userInfo() {
+        return this.$store.state.init.userInfo;
+      },
+      redemptionList() {
+        return this.$store.state.init.redemptionList;
       }
     },
-    returnRedemption() {
-      let vm = this;
-      vm.money = 0;
-      vm.redemption = [];
-      vm.redemptionName = [];
-      vm.requestUserInfo();
-      vm.isShowResult = false;
+    watch: {
+      userInfo(userInfo) {
+        this.showCommit = true;
+      }
     },
-    requestUserInfo() {
-      // Indicator.open({
-      //   text: "加载中...",
-      //   spinnerType: "fading-circle"
-      // });
+    methods: {
+      commit() {
+        let vm = this;
+        if (vm.money > vm.userInfo.balance) {
+          MessageBox.alert("成交金额不能大于" + vm.userInfo.balance, "警告");
+          return;
+        } else if (vm.redemption.length == 0) {
+          MessageBox.alert("请选择换购物品", "警告");
+          return;
+        } else {
+          vm.$store.commit("doChangeBuy", {
+            code: vm.code,
+            value: vm.redemption.toString(),
+            money: vm.money
+          });
+          vm.redemptionList.forEach(element => {
+            if (vm.redemption.includes(element.value)) {
+              vm.redemptionName.push(element.label);
+            }
+          });
+          vm.isShowResult = true;
+        }
+      },
+      returnRedemption() {
+        let vm = this;
+        vm.money = 0;
+        vm.redemption = [];
+        vm.redemptionName = [];
+        vm.requestUserInfo();
+        vm.isShowResult = false;
+      },
+      requestUserInfo() {
+        let vm = this;
+        vm.$store.commit("getUserInfo", {
+          code: vm.code
+        });
+      }
+    },
+    beforeCreate() {},
+    created() {},
+    destroyed() {},
+    mounted() {
       let vm = this;
-      vm.$store.commit("getUserInfo", {
+      Indicator.open({
+        text: "加载中...",
+        spinnerType: "fading-circle"
+      });
+      vm.$store.commit("getRedemptionList", {
         code: vm.code,
-        //func: function() {Indicator.close();}
+        success: function() {
+          Indicator.close();
+          vm.requestUserInfo();
+        },
+        error: function() {
+          Indicator.close();
+        }
       });
     }
-  },
-  beforeCreate() {},
-  created() {},
-  destroyed() {},
-  mounted() {
-    let vm = this;
-    vm.$store.commit("getRedemptionList", {
-      code: vm.code,
-      func: function() {
-        vm.requestUserInfo();
-      }
-    });
-  }
-};
+  };
 </script>
-<style lang="css" scoped>
-.userInfoDiv {
-  text-align: center;
-  margin: 13px 8px 8px;
-}
-.userDiv {
-  display: block;
-  margin: 5px 0;
-  position: relative;
-}
 
-.balance,
-.username {
-  font-family: fantasy;
-}
-.admire {
-  text-align: center;
-  font-size: 16px;
-  color: red;
-  margin: 5px;
-}
-.param {
-  padding-bottom: 75px;
-}
-.saveButton {
-  position: fixed;
-  bottom: 0;
-  min-height: 60px;
-  border-radius: 0px;
-}
-.clearfix {
-  font-size: 20px;
-  margin: 5px 10px;
-}
-.isShowButton {
-  float: right;
-}
-.moneyInput {
-  display: inline-block;
-  width: 80%;
-}
-.result {
-  position: absolute;
-  width: 100%;
-  font-size: 18px;
-  padding-bottom: 75px;
-}
-.redemptionDetails {
-  margin: 10px;
-}
-.titles {
-  text-align: center;
-}
-.title {
-  display: block;
-  width: 100%;
-  margin: 5px 10px;
-}
-.item {
-  margin: 10px 10px;
-}
-.money {
-  text-align: center;
-  width: 100%;
-  display: block;
-  font-size: 24px;
-  color: red;
-}
+<style lang="css" scoped>
+  .userInfoDiv {
+    text-align: center;
+    margin: 13px 8px 8px;
+  }
+  .userDiv {
+    display: block;
+    margin: 5px 0;
+    position: relative;
+  }
+  .balance,
+  .username {
+    font-family: fantasy;
+  }
+  .admire {
+    text-align: center;
+    font-size: 16px;
+    color: red;
+    margin: 5px;
+  }
+  .param {
+    padding-bottom: 75px;
+  }
+  .saveButton {
+    position: fixed;
+    bottom: 0;
+    min-height: 60px;
+    border-radius: 0px;
+  }
+  .clearfix {
+    font-size: 20px;
+    margin: 5px 10px;
+  }
+  .isShowButton {
+    float: right;
+  }
+  .moneyInput {
+    display: inline-block;
+    width: 80%;
+  }
+  .result {
+    position: absolute;
+    width: 100%;
+    font-size: 18px;
+    padding-bottom: 75px;
+  }
+  .redemptionDetails {
+    margin: 10px;
+  }
+  .titles {
+    text-align: center;
+  }
+  .title {
+    display: block;
+    width: 100%;
+    margin: 5px 10px;
+  }
+  .item {
+    margin: 10px 10px;
+  }
+  .money {
+    text-align: center;
+    width: 100%;
+    display: block;
+    font-size: 24px;
+    color: red;
+  }
 </style>

@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import * as modules from "./modules";
-import { asmx } from "@/utils";
+import { httpUtils } from "@/utils";
 import axios from "axios";
 
 Vue.use(Vuex);
